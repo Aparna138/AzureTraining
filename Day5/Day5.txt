@@ -1,0 +1,54 @@
+#r "Newtonsoft.Json"
+
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+
+public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
+{
+    log.LogInformation("C# HTTP trigger function processed a request.");
+
+    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    dynamic data = JsonConvert.DeserializeObject(requestBody);
+    int startnumber = data.startnumber;
+    int endnumber = data.endnumber;
+    int nooflines = data.nooflines;
+    int div1=data.div1;
+    int div2=data.div2;
+    int div3=data.div3;
+    var sb = new System.Text.StringBuilder();
+    int i = 0;
+           for(int a=startnumber;a<endnumber;a++)
+            {
+                i++;
+                if (a % div1 == 0)
+                {
+                    sb.Append("Fizz ");
+                   
+                }
+                else if (a % div2 == 0)
+                {
+                    sb.Append("Buzz ");
+                    
+                }
+                else if (a % div3 == 0)
+                {
+                    sb.Append("FizBuzz ");
+                    
+                }  
+                else
+                {
+                    sb.Append(a+" ");
+                }
+                if (i == nooflines)
+                {
+                    i = 0;
+                    sb.AppendLine("");
+                } 
+            }         
+
+     return sb != null
+        ? (ActionResult)new OkObjectResult(sb.ToString())
+        : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+}
