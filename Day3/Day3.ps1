@@ -11,7 +11,13 @@ Function StorageOperations
 {
 #* Connect to AzureRMAccount
    Login-AzureRmAccount 
+   $SubscritionId ="a59a2ab0-69d4-49bb-ba55-b5c141c1c084"
+   $TenantId= "a894a5b5-7ab1-4258-a351-34c48f609278"
+   
+# Set the Context
+    Set-AzureRmContext -TenantId $TenantId -SubscriptionId $SubscritionId
 
+   
 #*Get Storage Account names and Location
     $resourceGroup = "myexistingresourcegroup"
     $storageAccountName = "myexistingstorageaccount"
@@ -19,8 +25,9 @@ Function StorageOperations
     $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroup `
       -Name $storageAccountName 
 
-# Get list of locations and select one.
-    Get-AzureRmLocation | select Location 
+# Get list of locations 
+    #Get-AzureRmLocation | select Location
+#set Storage location
     $location = "eastus"
 
 # Create a new resource group.
@@ -36,10 +43,7 @@ Function StorageOperations
       -Name $storageAccountName `
       -Location $location `
       -SkuName $skuName
-
-# Set the Context
-    Set-AzureRmContext -SubscriptionId a59a2ab0-69d4-49bb-ba55-b5c141c1c084
-
+      
 #Uploading Blob files into Storage Account
     $containerName = "blobs"
     New-AzureStorageContainer -Name $containerName -Context $ctx -Permission blob
