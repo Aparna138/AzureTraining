@@ -17,34 +17,17 @@ Function StorageOperations
 # Set the Context
     Set-AzureRmContext -TenantId $TenantId -SubscriptionId $SubscritionId
 
-   
-#*Get Storage Account names and Location
-    $resourceGroup = "myexistingresourcegroup"
-    $storageAccountName = "myexistingstorageaccount"
-    Get-AzureRMStorageAccount | Select StorageAccountName, Location
-    $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroup `
-      -Name $storageAccountName 
+#Create a resourcegroup
+   New-AzureRmResourceGroup RG10 "East Us"
+#Get Resource Group
+    $resourceGroup = "RG10"
+#Create a storagegroup
+    New-AzureRmStorageAccount -ResourceGroup $resourceGroup -AccountName storageaccountrg10
+#Get Storage Account
+  $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroup
+    $ctx = $storageAccount.Context   
 
-# Get list of locations 
-    #Get-AzureRmLocation | select Location
-#set Storage location
-    $location = "eastus"
-
-# Create a new resource group.
-    $resourceGroup = "ResourceGroupTest"
-    New-AzureRmResourceGroup -Name $resourceGroup -Location $location 
-
-# Set the name of the storage account and the SKU name. 
-    $storageAccountName = "storageaccountaparna"
-    $skuName = "Standard_LRS"
-
-# Create the storage account.
-    $storageAccount = New-AzureRmStorageAccount -ResourceGroupName $resourceGroup `
-      -Name $storageAccountName `
-      -Location $location `
-      -SkuName $skuName
-      
-#Uploading Blob files into Storage Account
+#Create a new container and Uploading Blob files into Storage Account
     $containerName = "blobs"
     New-AzureStorageContainer -Name $containerName -Context $ctx -Permission blob
     Set-AzureStorageBlobContent -File "E:\Bugs\Avendracalc.png" `
