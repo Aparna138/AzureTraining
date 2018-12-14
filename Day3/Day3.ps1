@@ -10,7 +10,7 @@
 Function StorageOperations
 {
 #* Connect to AzureRMAccount
-   Connect-AzureRmAccount 
+   Login-AzureRmAccount 
 
 #*Get Storage Account names and Location
     $resourceGroup = "myexistingresourcegroup"
@@ -37,8 +37,8 @@ Function StorageOperations
       -Location $location `
       -SkuName $skuName
 
-# Retrieve the context. 
-    $ctx = $storageAccount.Context
+# Set the Context
+    Set-AzureRmContext -SubscriptionId a59a2ab0-69d4-49bb-ba55-b5c141c1c084
 
 #Uploading Blob files into Storage Account
     $containerName = "blobs"
